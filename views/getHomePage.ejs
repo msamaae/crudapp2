@@ -1,0 +1,41 @@
+<%- include ('partials/_header.ejs') %>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <thead>
+                <table class="table table-bordered table-hover"> 
+                    <tr>
+                        <td>ID</td>
+                        <td>Restaurant</td>
+                        <td>City</td>
+                        <td>Address</td>
+                        <td>Rating</td>
+                        <td>Review</td>
+                        <td>Actions</td>
+                    </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through to display data -->
+                <% restaurants.forEach((element, index) => { %>
+                <tr>
+                    <td><%= element.restaurant_id %></td>
+                    <td><%= element.restaurant_name %></td>
+                    <td><%= element.restaurant_city %></td>
+                    <td><%= element.restaurant_address %></td>
+                    <td><%= element.restaurant_rating %></td>
+                    <td><a href="">Reviews about <%= element.restaurant_name %></a></td>
+                    <td>
+                        <a href="/restaurant/update/<%= element.restaurant_id %>" class="btn btn-info">Edit</a>
+                        <a href="/restaurant/delete/<%= element.restaurant_id %>" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+            </table>
+        </div>
+        <a href="/restaurant/add" class="btn btn-info">Add Restaurant</a>
+    </div>
+</div>
+
+

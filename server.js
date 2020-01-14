@@ -6,10 +6,10 @@ const morgan = require('morgan');
 const app = express();
 const port = process.env.PORT || 16200;
 
-const { getHomePage } = require('./routes/index');
+const { getHomePage, getAddRestaurantPage, addRestaurant } = require('./routes/restaurant');
 
 // create connection to db
-let db = mysql.createConnection({
+const db = mysql.createConnection({
     host: 'xav-p-mariadb01.xavizus.com',
     user: 'Moohammad',
     password: 'oq14XwiHjk9TygJP',
@@ -22,6 +22,8 @@ db.connect((err) => {
     if (err) throw err;
     console.log('Connected to database!');
 });
+// so that we can use db variable globally
+global.db = db;
 
 // middlewares
 app.use(morgan('dev'));
@@ -35,9 +37,10 @@ app.set('view engine', 'ejs');
 
 
 
-/****************************************************************/
-app.get('/', getHomePage);
-
+// routes
+app.get('/restaurant', getHomePage);
+app.get('/restaurant/add', getAddRestaurantPage);
+app.post('/restaurant/add', addRestaurant);
 
 
 // listen to port
