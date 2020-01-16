@@ -24,7 +24,7 @@
                     <td><%= element.restaurant_city %></td>
                     <td><%= element.restaurant_address %></td>
                     <td><%= element.restaurant_rating %></td>
-                    <td><a href="">Reviews about <%= element.restaurant_name %></a></td>
+                    <td><a href="/restaurant/review/<%= element.restaurant_id %>">Reviews about <%= element.restaurant_name %></a></td>
                     <td>
                         <a href="/restaurant/edit/<%= element.restaurant_id %>" class="btn btn-info">Edit</a>
                         <a href="/restaurant/delete/<%= element.restaurant_id %>" class="btn btn-danger">Delete</a>
@@ -34,7 +34,7 @@
             </tbody>
             </table>
         </div>
-        <a href="/restaurant/add" class="btn btn-info">Add Restaurant</a>
+        <a href="/restaurant/add" class="btn btn-primary">Add Restaurant</a>
     </div>
 </div>
 

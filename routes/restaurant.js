@@ -9,14 +9,17 @@ module.exports = {
                 res.json(err);
             }
             res.render('getHomePage', {
-                restaurants: result
+                restaurants: result,
+                name: req.user.name
             });
         });
     },
 
     // GET ADD RESTAURANT PAGE
-    getAddRestaurantPage: (req, res) => {
-        res.render('getAddRestaurantPage');
+    getAddPage: (req, res) => {
+        res.render('getAddPage', {
+            name: req.user.name
+        });
     },
 
     // ADD RESTAURANT
@@ -26,9 +29,6 @@ module.exports = {
         let restaurantAddress = req.body.restaurant_address;
         let restaurantRating = req.body.restaurant_rating;      
         
-       /*  let query = 'INSERT INTO restaurants (restaurant_name, restaurant_city, restaurant_address, restaurant_rating)' +
-        'VALUES' ('" + restaurant_name + "', '" + restaurant_adress + "', '" + restaurant_city + "')"; */
-
         let query = "INSERT INTO restaurants (restaurant_name, restaurant_city, restaurant_address, restaurant_rating)" +
         "VALUES ('" + restaurantName + "', '" + restaurantCity + "', '" + restaurantAddress + "', '" + restaurantRating + "')";
 
@@ -36,12 +36,12 @@ module.exports = {
             if (err) {
                 res.json(err);
             }
-            res.redirect('/')
+            res.redirect('/restaurant')
         });
     },
 
     // GET EDIT RESTAURANT PAGE
-    getEditRestaurantPage: (req, res) => {
+    getEditPage: (req, res) => {
         let restaurantId = req.params.id;
         let query = `SELECT * FROM restaurants WHERE restaurant_id = ${restaurantId}`;
 
@@ -49,9 +49,10 @@ module.exports = {
             if (err) {
                 res.json(err);
             }
-            res.render('getEditRestaurantPage', {
-                // [0] to get the input fields filled
-                restaurants: result[0]
+            res.render('getEditPage', {
+                // [0] to get the input fields in the form filled
+                restaurants: result[0],
+                name: req.user.name
             });
         });
     },
@@ -71,9 +72,54 @@ module.exports = {
             if (err) {
                 res.json(err);
             }
-            res.redirect('/');
-        })
+            res.redirect('/restaurant');
+        });
     },
 
     // DELETE RESTAURANT
+    deleteRestaurant: (req, res) => {
+        let restaurantId = req.params.id;
+        let query = `DELETE FROM restaurants WHERE restaurant_id = ${restaurantId}`;
+
+        db.query(query, (err, result) => {
+            if (err) {
+                res.json(err);
+            }
+            res.redirect('/restaurant');
+        });
+    },
+
+    // GET REVIEW PAGE
+    getReviewPage: (req, res) => {
+        let restaurantId = req.params.id;
+        let query = `SELECT * FROM reviews WHERE restaurant_id = ${restaurantId}`;
+
+        db.query(query, (err, result) => {
+            if (err) {
+                res.json(err);
+            }
+            res.render('getReviewPage', {
+                reviews: result,
+                name: req.user.name
+            });
+        });
+    },
+
+    // ADD REVIEW 
+    addReview: (req, res) => {
+        let userId = req.user.id;
+        let userName = req.user.name;
+        let review = req.body.review;
+        let restaurantId = req.params.id;
+
+        let query = `INSERT INTO reviews (user_id, user_name, review, restaurant_id) 
+        VALUES ('${userId}', '${userName}', '${review}', '${restaurantId}')`;
+
+        db.query(query, (err, result) => {
+            if (err) {
+                res.json(err);
+            }
+            res.redirect(`/restaurant/review/${restaurantId}`);
+        });
+    }
 }
