@@ -63,9 +63,11 @@ module.exports = {
         let restaurantName = req.body.restaurant_name;
         let restaurantAddress = req.body.restaurant_address;
         let restaurantCity = req.body.restaurant_city;
+        let restaurantRating = req.body.restaurant_rating;
 
         let query = `UPDATE restaurants 
-        SET restaurant_name = '${restaurantName}', restaurant_address = '${restaurantAddress}', restaurant_city = '${restaurantCity}' 
+        SET restaurant_name = '${restaurantName}', restaurant_address = '${restaurantAddress}', 
+        restaurant_city = '${restaurantCity}', restaurant_rating = '${restaurantRating}' 
         WHERE restaurant_id = ${restaurantId}`;
         
         db.query(query, (err, result) => {
